@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Roadmap for "Other" - A Non-Profit Initiative</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Embrace -->
+    <!-- Application Structure Plan: A thematic, single-page application with scroll-spy navigation. It transforms the linear report into an interactive roadmap with a vertical timeline for the process, interactive cards for goals, and a dynamic chart for fundraising. This is more engaging and helps users understand the "what," "why," and "how" at a glance, rather than reading a long document. The structure guides the user from the inspirational mission to the practical steps and finally to a call to action. -->
+    <!-- Visualization & Content Choices: 
+        Report Info: Phases of non-profit creation. -> Goal: Organize/Show Process. -> Viz: Interactive Vertical Timeline (HTML/CSS/JS). -> Interaction: Click to reveal details of each phase. -> Justification: More engaging and less overwhelming than a long list of steps. -> Method: Custom HTML/JS.
+        Report Info: Core Goals & Objectives. -> Goal: Inform/Organize. -> Viz: Interactive Cards (HTML/CSS/JS). -> Interaction: Click to expand details. -> Justification: Breaks down complex goals into digestible chunks. -> Method: Custom HTML/JS.
+        Report Info: Fundraising Streams. -> Goal: Inform/Compare. -> Viz: Donut Chart. -> Interaction: Hover for tooltips. -> Justification: Provides a quick visual summary of the financial strategy. -> Library: Chart.js.
+        Report Info: Strategic Use of Art -> Goal: Inform/Inspire -> Viz: Gallery-style layout -> Interaction: Static display -> Justification: Visually separates and highlights the unique artistic element of the non-profit's identity. -> Method: Custom HTML/CSS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8; /* Warm Neutral Background */
+        }
+        .text-brand-primary { color: #3D405B; } /* Deep Slate */
+        .text-brand-secondary { color: #8D99AE; } /* Soft Gray */
+        .bg-brand-accent { background-color: #E07A5F; } /* Terracotta Accent */
+        .border-brand-accent { border-color: #E07A5F; }
+        .bg-brand-light { background-color: #FFFFFF; }
+        .nav-link.active {
+            color: #E07A5F;
+            font-weight: 600;
+        }
+        .phase-content {
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .phase-content.active {
+            max-height: 500px;
+            opacity: 1;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 9999px;
+            background-color: #CBD5E1;
+            border: 2px solid #FDFBF8;
+        }
+        .timeline-item.active::before {
+            background-color: #E07A5F;
+        }
+    </style>
+</head>
+<body class="text-brand-primary">
+
+    <!-- Header & Navigation -->
+    <header class="bg-brand-light sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-brand-primary">Other</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#mission" class="nav-link text-brand-secondary hover:text-brand-accent transition">Our Mission</a>
+                <a href="#plan" class="nav-link text-brand-secondary hover:text-brand-accent transition">The Plan</a>
+                <a href="#fundraising" class="nav-link text-brand-secondary hover:text-brand-accent transition">Fundraising</a>
+                <a href="#involved" class="nav-link text-brand-secondary hover:text-brand-accent transition">Get Involved</a>
+            </div>
+            <div class="md:hidden">
+                <button id="menu-btn" class="text-brand-primary focus:outline-none">
+                    <span class="text-2xl">&#9776;</span>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#mission" class="block py-2 px-4 text-sm text-brand-secondary hover:bg-gray-100">Our Mission</a>
+            <a href="#plan" class="block py-2 px-4 text-sm text-brand-secondary hover:bg-gray-100">The Plan</a>
+            <a href="#fundraising" class="block py-2 px-4 text-sm text-brand-secondary hover:bg-gray-100">Fundraising</a>
+            <a href="#involved" class="block py-2 px-4 text-sm text-brand-secondary hover:bg-gray-100">Get Involved</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+
+        <!-- Hero Section -->
+        <section id="hero" class="text-center mb-20">
+            <h2 class="text-4xl md:text-5xl font-bold text-brand-primary mb-4">A Roadmap for "Other"</h2>
+            <p class="text-lg text-brand-secondary max-w-3xl mx-auto mb-6">"To empower neurodivergent individuals and foster understanding... preventing the despair of isolation and honoring every unique mind."</p>
+            <div class="mb-8">
+                <img src="uploaded:20241110_231049.jpg-50089294-7187-4702-9479-2c4d419351ce" 
+                     alt="Padlock with 'Other' written on it" 
+                     class="mx-auto rounded-xl shadow-lg w-full max-w-[720px] h-auto object-cover"
+                     onerror="this.onerror=null; this.src='https://placehold.co/720x480/AEC6CF/FFFFFF?text=Image+Not+Available';">
+                <p class="text-sm text-brand-secondary mt-2">The namesake of our initiative, symbolizing unlocking understanding.</p>
+            </div>
+             <div class="p-6 bg-brand-light rounded-2xl shadow-lg border border-gray-200 inline-block">
+                <h3 class="font-semibold text-brand-primary mb-2">In Honor and Inspiration</h3>
+                <p class="text-brand-secondary text-sm max-w-xl">This initiative is built upon the memory and incredible talent of a beloved sister. Her art will be woven into the fabric of "Other," serving as a beacon of creativity, expression, and the profound beauty of a unique mind.</p>
+            </div>
+        </section>
+
+        <!-- Mission & Goals Section -->
+        <section id="mission" class="mb-20 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-brand-primary">Our Purpose</h2>
+                <p class="text-md text-brand-secondary mt-2">To build a world where neurodiversity is recognized, understood, and celebrated in every community.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Mission Card -->
+                <div class="bg-brand-light p-6 rounded-2xl shadow-md">
+                    <h3 class="text-xl font-bold text-brand-primary mb-3">Mission</h3>
+                    <p class="text-brand-secondary">To empower neurodivergent individuals and foster understanding within underserved and rural communities by providing accessible education on autism, ADHD, and other neurocomplexities. We aim to dismantle societal pressures to conform, celebrating authenticity and bridging the gap between neurodiversity and community acceptance, thereby preventing the despair of isolation and honoring every unique mind.</p>
+                </div>
+                <!-- Vision Card -->
+                <div class="bg-brand-light p-6 rounded-2xl shadow-md">
+                    <h3 class="text-xl font-bold text-brand-primary mb-3">Vision</h3>
+                    <p class="text-brand-secondary">A world where neurodiversity is recognized, understood, and celebrated in every community, enabling all individuals, regardless of their neurology or location, to live authentically, thrive financially, and contribute their unique talents without fear of disparity or isolation.</p>
+                </div>
+                <!-- Core Goals -->
+                <div class="bg-brand-light p-6 rounded-2xl shadow-md md:col-span-2 lg:col-span-1">
+                     <h3 class="text-xl font-bold text-brand-primary mb-4">Core Goals</h3>
+                     <ul id="goals-list" class="space-y-3"></ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Plan Section -->
+        <section
