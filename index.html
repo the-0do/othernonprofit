@@ -12,10 +12,13 @@
     <!-- Chosen Palette: Warm Embrace -->
     <!-- Application Structure Plan: A thematic, single-page application with scroll-spy navigation. It transforms the linear report into an interactive roadmap with a vertical timeline for the process, interactive cards for goals, and a dynamic chart for fundraising. This is more engaging and helps users understand the "what," "why," and "how" at a glance, rather than reading a long document. The structure guides the user from the inspirational mission to the practical steps and finally to a call to action. -->
     <!-- Visualization & Content Choices: 
+        Report Info: Namesake Image. -> Goal: Inform/Inspire. -> Viz: Image in a styled frame (3:4 aspect ratio). -> Interaction: Static. -> Justification: Creates a powerful emotional anchor at the top of the page with a specific, vertical visual proportion, scaling responsively. -> Method: HTML/CSS.
         Report Info: Phases of non-profit creation. -> Goal: Organize/Show Process. -> Viz: Interactive Vertical Timeline (HTML/CSS/JS). -> Interaction: Click to reveal details of each phase. -> Justification: More engaging and less overwhelming than a long list of steps. -> Method: Custom HTML/JS.
         Report Info: Core Goals & Objectives. -> Goal: Inform/Organize. -> Viz: Interactive Cards (HTML/CSS/JS). -> Interaction: Click to expand details. -> Justification: Breaks down complex goals into digestible chunks. -> Method: Custom HTML/JS.
         Report Info: Fundraising Streams. -> Goal: Inform/Compare. -> Viz: Donut Chart. -> Interaction: Hover for tooltips. -> Justification: Provides a quick visual summary of the financial strategy. -> Library: Chart.js.
-        Report Info: Strategic Use of Art -> Goal: Inform/Inspire -> Viz: Gallery-style layout -> Interaction: Static display -> Justification: Visually separates and highlights the unique artistic element of the non-profit's identity. -> Method: Custom HTML/CSS. -->
+        Report Info: Strategic Use of Art -> Goal: Inform/Inspire -> Viz: Gallery-style layout -> Interaction: Static display -> Justification: Visually separates and highlights the unique artistic element of the non-profit's identity. -> Method: Custom HTML/CSS.
+        New Feature: AI-Powered Explanation. -> Goal: Inform/Educate. -> Viz: Text output in a card. -> Interaction: User input + button click to generate explanation via Gemini API. -> Justification: Directly supports educational mission with dynamic content generation. -> Method: Gemini API call via JS.
+        New Feature: AI-Powered Artistic Expression & Insight. -> Goal: Inspire/Express. -> Viz: Text output in a card. -> Interaction: User input + button click to generate artistic interpretation via Gemini API. -> Justification: Leverages LLM for creative expression and deeper connection to neurodiverse feelings, honoring Kristi's artistic legacy. -> Method: Gemini API call via JS. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
@@ -23,7 +26,7 @@
             background-color: #FDFBF8; /* Warm Neutral Background */
         }
         .text-brand-primary { color: #3D405B; } /* Deep Slate */
-        .text-brand-secondary { color: #8D99AE; } /* Soft Gray */
+        .text-brand-secondary { color: #818D9D; } /* Soft Gray - adjusted for contrast */
         .bg-brand-accent { background-color: #E07A5F; } /* Terracotta Accent */
         .border-brand-accent { border-color: #E07A5F; }
         .bg-brand-light { background-color: #FFFFFF; }
@@ -70,6 +73,17 @@
         .timeline-item.active::before {
             background-color: #E07A5F;
         }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #E07A5F;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body class="text-brand-primary">
@@ -80,6 +94,7 @@
             <h1 class="text-2xl font-bold text-brand-primary">Other</h1>
             <div class="hidden md:flex space-x-8">
                 <a href="#mission" class="nav-link text-brand-secondary hover:text-brand-accent transition">Our Mission</a>
+                <a href="#explore-neuro" class="nav-link text-brand-secondary hover:text-brand-accent transition">Explore Neurocomplexities</a>
                 <a href="#plan" class="nav-link text-brand-secondary hover:text-brand-accent transition">The Plan</a>
                 <a href="#fundraising" class="nav-link text-brand-secondary hover:text-brand-accent transition">Fundraising</a>
                 <a href="#involved" class="nav-link text-brand-secondary hover:text-brand-accent transition">Get Involved</a>
@@ -92,6 +107,7 @@
         </nav>
         <div id="mobile-menu" class="hidden md:hidden">
             <a href="#mission" class="block py-2 px-4 text-sm text-brand-secondary hover:bg-gray-100">Our Mission</a>
+            <a href="#explore-neuro" class="block py-2 px-4 text-sm text-brand-secondary hover:bg-gray-100">Explore Neurocomplexities</a>
             <a href="#plan" class="block py-2 px-4 text-sm text-brand-secondary hover:bg-gray-100">The Plan</a>
             <a href="#fundraising" class="block py-2 px-4 text-sm text-brand-secondary hover:bg-gray-100">Fundraising</a>
             <a href="#involved" class="block py-2 px-4 text-sm text-brand-secondary hover:bg-gray-100">Get Involved</a>
@@ -104,17 +120,16 @@
         <!-- Hero Section -->
         <section id="hero" class="text-center mb-20">
             <h2 class="text-4xl md:text-5xl font-bold text-brand-primary mb-4">A Roadmap for "Other"</h2>
-            <p class="text-lg text-brand-secondary max-w-3xl mx-auto mb-6">"To empower neurodivergent individuals and foster understanding... preventing the despair of isolation and honoring every unique mind."</p>
-            <div class="mb-8">
-                <img src="uploaded:20241110_231049.jpg-50089294-7187-4702-9479-2c4d419351ce" 
+            <p class="text-lg text-brand-secondary max-w-3xl mx-auto mb-4">"To empower neurodivergent individuals and foster understanding... preventing the despair of isolation and honoring every unique mind."</p>
+            <div class="mb-8 mx-auto w-full md:w-3/4 lg:w-1/2 relative pt-[133.33%] rounded-xl shadow-lg overflow-hidden">
+                <img src="https://i.imgur.com/GXAZBys.jpg" 
                      alt="Padlock with 'Other' written on it" 
-                     class="mx-auto rounded-xl shadow-lg w-full max-w-[720px] h-auto object-cover"
-                     onerror="this.onerror=null; this.src='https://placehold.co/720x480/AEC6CF/FFFFFF?text=Image+Not+Available';">
-                <p class="text-sm text-brand-secondary mt-2">The namesake of our initiative, symbolizing unlocking understanding.</p>
+                     class="absolute inset-0 w-full h-full object-cover">
             </div>
-             <div class="p-6 bg-brand-light rounded-2xl shadow-lg border border-gray-200 inline-block">
+            <p class="text-sm text-brand-secondary mt-3">The namesake of our initiative, symbolizing unlocking understanding.</p>
+             <div class="p-6 bg-brand-light rounded-2xl shadow-lg border border-gray-200 inline-block mt-8">
                 <h3 class="font-semibold text-brand-primary mb-2">In Honor and Inspiration</h3>
-                <p class="text-brand-secondary text-sm max-w-xl">This initiative is built upon the memory and incredible talent of a beloved sister. Her art will be woven into the fabric of "Other," serving as a beacon of creativity, expression, and the profound beauty of a unique mind.</p>
+                <p class="text-brand-secondary text-sm max-w-xl">This initiative is built upon the memory and incredible talent of our beloved sister, Kristi. Her art will be woven into the fabric of "Other," serving as a beacon of creativity, expression, and the profound beauty of a unique mind.</p>
             </div>
         </section>
 
@@ -143,5 +158,444 @@
             </div>
         </section>
 
+        <!-- Explore Neurocomplexities Section -->
+        <section id="explore-neuro" class="mb-20 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-brand-primary">Explore Neurocomplexities ✨</h2>
+                <p class="text-md text-brand-secondary mt-2">Get quick, empathetic explanations of neurodevelopmental terms.</p>
+            </div>
+            <div class="bg-brand-light p-8 rounded-2xl shadow-lg border border-gray-200 max-w-2xl mx-auto">
+                <div class="flex flex-col sm:flex-row gap-4 mb-6">
+                    <input type="text" id="neuroTermInput" placeholder="e.g., Autism, ADHD, Sensory Processing" class="flex-grow p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-accent">
+                    <button id="generateExplanationBtn" class="bg-brand-accent text-white font-bold py-3 px-6 rounded-full hover:opacity-90 transition-opacity flex-shrink-0 flex items-center justify-center">
+                        <span id="buttonText">Generate Explanation</span>
+                        <div id="loadingSpinner" class="spinner ml-2 hidden"></div>
+                    </button>
+                </div>
+                <div id="explanationOutput" class="p-4 bg-gray-50 rounded-lg border border-gray-200 min-h-[100px] text-brand-secondary text-left flex items-center justify-center text-sm italic">
+                    Enter a term above to learn more about it.
+                </div>
+            </div>
+        </section>
+
         <!-- The Plan Section -->
-        <section
+        <section id="plan" class="mb-20 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-brand-primary">The Plan: A Step-by-Step Guide</h2>
+                <p class="text-md text-brand-secondary mt-2">A clear, phased approach to bring "Other" to life.</p>
+            </div>
+            <div class="flex flex-col md:flex-row gap-8 lg:gap-12">
+                <!-- Timeline Navigation -->
+                <div class="md:w-1/3 relative">
+                    <div class="border-l-2 border-gray-300 ml-4 pl-8 py-4">
+                        <ul id="timeline-nav" class="space-y-8"></ul>
+                    </div>
+                </div>
+                <!-- Timeline Content -->
+                <div id="timeline-content-container" class="md:w-2/3 bg-brand-light p-8 rounded-2xl shadow-lg border border-gray-200">
+                </div>
+            </div>
+        </section>
+
+        <!-- Fundraising Section -->
+        <section id="fundraising" class="mb-20 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-brand-primary">Fueling Our Mission</h2>
+                <p class="text-md text-brand-secondary mt-2">Our strategy for building a sustainable future for "Other".</p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-12 items-start">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-6">Diversified Funding Streams</h3>
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                            <h4 class="font-bold">Individual Donors (Grassroots)</h4>
+                            <p class="text-sm text-brand-secondary">Engaging community members through online giving, social media, and direct outreach.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                            <h4 class="font-bold">Grants & Foundations</h4>
+                            <p class="text-sm text-brand-secondary">Seeking support from foundations focused on mental health, education, and rural development.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                            <h4 class="font-bold">Community Events & Campaigns</h4>
+                            <p class="text-sm text-brand-secondary">Hosting awareness walks, art auctions, and local partnerships to engage and fundraise.</p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-2xl font-semibold mt-10 mb-6">Artistic Integration & Expressive Insight ✨</h3>
+                    <p class="text-brand-secondary mb-4">Art is not just an asset; it's the soul of our narrative. We will honor the founding inspiration by integrating her work strategically and providing tools for creative expression.</p>
+                    <div class="grid grid-cols-2 gap-4 text-center mb-8">
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                            <span class="text-2xl">🎨</span>
+                            <h4 class="font-bold mt-1">Branding & Awareness</h4>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                            <span class="text-2xl">🛍️</span>
+                            <h4 class="font-bold mt-1">Merchandise</h4>
+                        </div>
+                         <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                            <span class="text-2xl">🖼️</span>
+                            <h4 class="font-bold mt-1">Exhibitions & Auctions</h4>
+                        </div>
+                         <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+                            <span class="text-2xl">✍️</span>
+                            <h4 class="font-bold mt-1">Therapeutic Programs</h4>
+                        </div>
+                    </div>
+                     <div class="bg-brand-light p-6 rounded-2xl shadow-lg border border-gray-200">
+                        <h4 class="text-xl font-bold text-brand-primary mb-4">Artistic Muse: Describe a Feeling</h4>
+                        <textarea id="artisticPromptInput" rows="4" placeholder="e.g., The feeling of masking in social situations, Sensory overload in a busy city, The quiet joy of deep focus..." class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-accent mb-4"></textarea>
+                        <button id="generateArtisticInsightBtn" class="bg-brand-accent text-white font-bold py-3 px-6 rounded-full hover:opacity-90 transition-opacity w-full flex items-center justify-center">
+                            <span id="artisticButtonText">Generate Artistic Insight</span>
+                            <div id="artisticLoadingSpinner" class="spinner ml-2 hidden"></div>
+                        </button>
+                        <div id="artisticInsightOutput" class="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200 min-h-[100px] text-brand-secondary text-left flex items-center justify-center text-sm italic">
+                            Describe a feeling or experience to get artistic inspiration.
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="chart-container">
+                        <canvas id="fundraisingChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-brand-secondary mt-4">Projected Fundraising Mix</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Get Involved Section -->
+        <section id="involved" class="text-center bg-brand-light p-12 rounded-2xl shadow-lg border border-gray-200 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-brand-primary">Become a Part of the Story</h2>
+            <p class="text-md text-brand-secondary max-w-2xl mx-auto mt-4 mb-8">"Other" will be built by a community of dedicated, trustworthy, and passionate individuals. We are actively seeking foundational board members to help guide our mission.</p>
+            <div class="max-w-md mx-auto bg-white p-6 rounded-xl border border-gray-200 mb-8">
+                 <h4 class="font-bold text-lg text-brand-primary mb-3">We Need Expertise In:</h4>
+                 <ul class="text-brand-secondary text-left space-y-1 list-inside list-disc">
+                    <li>Non-profit Management & Governance</li>
+                    <li>Finance & Accounting</li>
+                    <li>Legal & Compliance</li>
+                    <li>Fundraising & Communications</li>
+                    <li>Community Outreach & Lived Experience</li>
+                 </ul>
+            </div>
+            <a href="mailto:info@othernonprofit.org?subject=Interested%20in%20Joining%20the%20Board" class="bg-brand-accent text-white font-bold py-3 px-8 rounded-full hover:opacity-90 transition-opacity text-lg">Express Interest</a>
+        </section>
+
+    </main>
+    
+    <footer class="text-center py-8 mt-12 border-t border-gray-200">
+        <p class="text-brand-secondary text-sm">&copy; 2025 Other Initiative. A tribute to every unique mind.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const goalsData = [
+                {
+                    title: "Educational Outreach",
+                    description: "To deliver comprehensive, accessible, and empathetic educational programs to rural and underserved communities, explaining neurocomplexities, early indicators, and the impact of masking."
+                },
+                {
+                    title: "Personal Narratives",
+                    description: "To share lived experiences of late-diagnosed neurodivergent adults, fostering connection, reducing stigma, and promoting self-acceptance."
+                },
+                {
+                    title: "Community Bridge-Building",
+                    description: "To facilitate dialogue and understanding between neurodivergent individuals and their communities, encouraging inclusive environments where diverse minds can flourish."
+                },
+                {
+                    title: "Artistic Integration",
+                    description: "To incorporate the therapeutic and communicative power of art into educational materials and outreach efforts, providing creative avenues for expression and understanding."
+                },
+                {
+                    title: "Resource Navigation",
+                    description: "To provide information on resources that can help neurodivergent individuals, particularly late-diagnosed adults, navigate support systems and pathways to financial independence."
+                }
+            ];
+
+            const planData = [
+                {
+                    phase: "Phase 1: Foundational Planning",
+                    title: "Laying the Groundwork",
+                    description: "Defining our purpose, choosing our name, and setting the core values that will guide every decision we make.",
+                    steps: [
+                        "Define Mission, Vision, and Values",
+                        "Choose and Verify Non-Profit Name",
+                        "Reserve Name with Texas Secretary of State (Optional)"
+                    ]
+                },
+                {
+                    phase: "Phase 2: Building the Board & Governance",
+                    title: "Assembling Our Leadership",
+                    description: "Recruiting a diverse and independent Board of Directors and establishing the internal rules that will govern our operations.",
+                    steps: [
+                        "Recruit Initial Board of Directors (min. 3 unrelated)",
+                        "Seek Diverse Expertise (Finance, Legal, Outreach, etc.)",
+                        "Draft and Adopt Bylaws & Conflict of Interest Policy"
+                    ]
+                },
+                {
+                    phase: "Phase 3: State & Federal Filings",
+                    title: "Making it Official",
+                    description: "Navigating the legal requirements to establish 'Other' as a registered non-profit corporation with federal tax-exempt status.",
+                    steps: [
+                        "File Articles of Incorporation (Texas SOS)",
+                        "Obtain Employer Identification Number (EIN) from IRS",
+                        "Apply for 501(c)(3) Status with IRS (Form 1023)",
+                        "Register with Texas Attorney General's Office",
+                        "Apply for State Tax Exemptions"
+                    ]
+                },
+                {
+                    phase: "Phase 4: Ongoing Compliance & Operations",
+                    title: "Launching and Sustaining",
+                    description: "Putting our plans into action: opening accounts, developing programs, and ensuring we meet all annual requirements to maintain our status.",
+                    steps: [
+                        "Open a Dedicated Non-Profit Bank Account",
+                        "Develop Educational Programs and Services",
+                        "Obtain Necessary Insurance (Liability, D&O)",
+                        "Establish Process for Annual IRS & State Filings"
+                    ]
+                }
+            ];
+
+            const goalsList = document.getElementById('goals-list');
+            goalsData.forEach(goal => {
+                const li = document.createElement('li');
+                li.className = "p-3 bg-gray-50 rounded-md border border-gray-200";
+                li.innerHTML = `
+                    <details>
+                        <summary class="font-semibold cursor-pointer text-brand-primary">${goal.title}</summary>
+                        <p class="mt-2 text-sm text-brand-secondary">${goal.description}</p>
+                    </details>
+                `;
+                goalsList.appendChild(li);
+            });
+
+            const timelineNav = document.getElementById('timeline-nav');
+            const timelineContentContainer = document.getElementById('timeline-content-container');
+
+            planData.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.className = 'timeline-item relative';
+                li.innerHTML = `<button data-index="${index}" class="timeline-btn text-left font-semibold text-brand-primary hover:text-brand-accent transition">${item.phase}</button>`;
+                timelineNav.appendChild(li);
+            });
+            
+            timelineNav.addEventListener('click', (e) => {
+                if(e.target.classList.contains('timeline-btn')) {
+                    const index = e.target.getAttribute('data-index');
+                    updateTimelineContent(index);
+
+                    document.querySelectorAll('.timeline-item').forEach(item => item.classList.remove('active'));
+                    e.target.parentElement.classList.add('active');
+                }
+            });
+
+            function updateTimelineContent(index) {
+                const item = planData[index];
+                let stepsHtml = item.steps.map(step => `<li class="flex items-start"><span class="text-brand-accent mr-2 mt-1">&#10003;</span><span>${step}</span></li>`).join('');
+                timelineContentContainer.innerHTML = `
+                    <h3 class="text-2xl font-bold text-brand-primary mb-2">${item.title}</h3>
+                    <p class="text-brand-secondary mb-6">${item.description}</p>
+                    <ul class="space-y-3 text-brand-secondary">${stepsHtml}</ul>
+                `;
+            }
+            
+            updateTimelineContent(0);
+            if(document.querySelector('.timeline-item')) {
+              document.querySelector('.timeline-item').classList.add('active');
+            }
+
+
+            const ctx = document.getElementById('fundraisingChart').getContext('2d');
+            const fundraisingChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Grants', 'Individual Donors', 'Events & Corporate'],
+                    datasets: [{
+                        label: 'Fundraising Mix',
+                        data: [50, 35, 15],
+                        backgroundColor: [
+                            '#3D405B', // Deep Slate
+                            '#818D9D', // Soft Gray
+                            '#E07A5F', // Terracotta Accent
+                        ],
+                        borderColor: '#FDFBF8',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#3D405B'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                },
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link, #mobile-menu a');
+            const sections = document.querySelectorAll('main section');
+
+            function closeMenu() {
+                mobileMenu.classList.add('hidden');
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 65) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            // Gemini API Integration Logic for Neurocomplexities Explanation
+            const neuroTermInput = document.getElementById('neuroTermInput');
+            const generateExplanationBtn = document.getElementById('generateExplanationBtn');
+            const explanationOutput = document.getElementById('explanationOutput');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const buttonText = document.getElementById('buttonText');
+
+            generateExplanationBtn.addEventListener('click', async () => {
+                const prompt = neuroTermInput.value.trim();
+                if (!prompt) {
+                    explanationOutput.textContent = "Please enter a term to explain.";
+                    return;
+                }
+
+                loadingSpinner.classList.remove('hidden');
+                buttonText.textContent = 'Generating...';
+                generateExplanationBtn.disabled = true;
+                explanationOutput.textContent = ''; // Clear previous output
+
+                try {
+                    let chatHistory = [];
+                    chatHistory.push({ role: "user", parts: [{ text: `Explain '${prompt}' in simple, empathetic terms for a community audience, focusing on common experiences and early indicators. Avoid jargon. Keep it concise, around 100-150 words.` }] });
+                    const payload = { contents: chatHistory };
+                    const apiKey = ""; 
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        explanationOutput.textContent = text;
+                    } else {
+                        explanationOutput.textContent = "Could not generate explanation. Please try again.";
+                        console.error('Unexpected API response structure:', result);
+                    }
+                } catch (error) {
+                    explanationOutput.textContent = "Error generating explanation. Please try again later.";
+                    console.error('Error calling Gemini API:', error);
+                } finally {
+                    loadingSpinner.classList.add('hidden');
+                    buttonText.textContent = 'Generate Explanation';
+                    generateExplanationBtn.disabled = false;
+                }
+            });
+
+            // Gemini API Integration Logic for Artistic Insight
+            const artisticPromptInput = document.getElementById('artisticPromptInput');
+            const generateArtisticInsightBtn = document.getElementById('generateArtisticInsightBtn');
+            const artisticInsightOutput = document.getElementById('artisticInsightOutput');
+            const artisticLoadingSpinner = document.getElementById('artisticLoadingSpinner');
+            const artisticButtonText = document.getElementById('artisticButtonText');
+
+            generateArtisticInsightBtn.addEventListener('click', async () => {
+                const prompt = artisticPromptInput.value.trim();
+                if (!prompt) {
+                    artisticInsightOutput.textContent = "Please describe a feeling or experience.";
+                    return;
+                }
+
+                artisticLoadingSpinner.classList.remove('hidden');
+                artisticButtonText.textContent = 'Generating...';
+                generateArtisticInsightBtn.disabled = true;
+                artisticInsightOutput.textContent = ''; // Clear previous output
+
+                try {
+                    let chatHistory = [];
+                    chatHistory.push({ role: "user", parts: [{ text: `As an artistic muse, generate a short (50-80 words) descriptive text for a visual art piece based on the feeling/experience: '${prompt}'. Focus on abstract concepts like colors, shapes, textures, light, movement, and mood that could represent this, especially from a neurodivergent perspective if applicable. Avoid direct narratives.` }] });
+                    const payload = { contents: chatHistory };
+                    const apiKey = ""; 
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        artisticInsightOutput.textContent = text;
+                    } else {
+                        artisticInsightOutput.textContent = "Could not generate artistic insight. Please try again.";
+                        console.error('Unexpected API response structure:', result);
+                    }
+                } catch (error) {
+                    artisticInsightOutput.textContent = "Error generating artistic insight. Please try again later.";
+                    console.error('Error calling Gemini API:', error);
+                } finally {
+                    artisticLoadingSpinner.classList.add('hidden');
+                    artisticButtonText.textContent = 'Generate Artistic Insight';
+                    generateArtisticInsightBtn.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
